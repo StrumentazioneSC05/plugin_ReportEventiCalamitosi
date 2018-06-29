@@ -1,0 +1,8 @@
+<RCC>
+	<qresource prefix="/plugins/EsportaAtlanteHail" >
+        <file>hail.png</file>
+    </qresource>
+	<qresource prefix="/plugins/EsportaAtlanteHail" >
+        <file>hail_dock.png</file>
+    </qresource>
+</RCC>

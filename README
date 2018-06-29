@@ -1,0 +1,66 @@
+
+##############
+Plugin e progetto QGis per esportare un raporto di evento in PDF con mappe di grandine e precipitazione cumulata sulle 24h centrato su dei comuni di interesse.
+
+
+OTTIMIZZAZIONI:
+- la mappa di sfondo raster della regione non si ridisegna nell'export dunque appare sgranata. Pare sia un problema proprio dovuto al WMS. Eventualmente sostituirla con dei raster statici ma ovviamente la mole del progetto, anche in un'ottica di scambio e distribuzione, ne risentirebbe....
+
+- testare il plugin "changeDataSource" per ricaricare nuove mappe di pioggia e grandine senza dover chiudere e riaprire il progetto: verificare che stile e legenda rimangano
+##############
+
+
+******************************
+AGGIORNAMENTO se INSTALLATE il PLUGIN "EsportaAtlanteHail":
+A-scompattare il file .zip del plugin nel percorso $HOME/.qgis2/python/plugins
+B-attivare il plugin tramite la "Gestione plugin" di QGis. Se non viene riconosciuto, riavviare QGis e/o controllare di aver copiato la cartella "EsportaAtlanteHail" nel percorso corretto
+B-se avete installato il plugin, i punti 3, 4, 5 e 8 elencati di seguito potete farli direttamente dalla finestra del plugin. Il punto 6 invece dovrete comunque seguirlo (cioè la creazione della funzione).
+Grazie al plugin, il punto 9 si può saltare.
+******************************
+
+1-aprire il progetto QGis "rapporto_evento-vXX.qgs"
+
+2-chiederà all'apertura dove si trovano i 2 raster COMP e HAIL: reindirizzateli sui file corretti che nel frattempo avrete copiato nella cartella "raster_tmp".
+NON caricateli dopo poichè la legenda del layout si basa sui raster originali, e se vengono rimossi dal progetto salta tutto. Insomma sostituite i raster all'apertura del progetto e tutto andrà bene
+
+3-il layer dei dati sulle stazioni ha un filtro sulla data: modificarlo di conseguenza.
+ATTENZIONE! Nel caso di cumulate di pioggia, inserire la data del "giorno successivo"!
+  NOTA con PLUGIN:Dunque scegliere il layer "v_meteo_pioggia_dd", selezionare il campo "data" e come filtro inserire ad esempio "= '2018-04-10'"
+
+4-il layer sui comuni_envelope ha un filtro sui comuni: modificarlo di conseguenza.
+  NOTA con PLUGIN:Dal menu a tendina scegliere il layer "comuni_envelope", poi il campo "NOME", e nel filtro inserire ad esempio " IN ('Bene Vagienna', 'CUNEO', 'Demonte')". Spuntare "usa questo filtro anche per l'atlante". Scrivere il nome del COMUNE così come compare in tabella!!!
+
+5-aprendo il layout di stampa (gestore di stampa), nelle opzioni di generazioni dell'atlante c'è un filtro sui comuni: modificarlo di conseguenza. Questo filtro potete anche applicarlo al layer "comuni_envelope". Indicazione utile nel caso di uso del plugin così dovete scrivere il filtro una volta sola.
+  NOTA con PLUGIN:Operazione non necessaria, passare alla sezione "Esporta l'Atlante come" della maschera del plugin e scegliere il formato di output desiderato.
+
+6-infine dovete immettere una nuova funzione per recuperare in automatico la data dalla mappa di grandine.
+Per fare questo aprire un editor di operazioni, poi andare su "Editor delle funzioni", creare un nuovo codice chiamandolo "getMetadata_from_raster" e scrivere nel codice:
+
+from qgis.core import *
+from qgis.gui import *
+import gdal
+
+@qgsfunction(args='auto', group='Custom')
+def getMetadata_from_raster(layer_name, feature, parent):
+    layer2=QgsMapLayerRegistry.instance().mapLayersByName(layer_name)[0]
+    provider2 = layer2.dataProvider()
+    path2 = provider2.dataSourceUri()
+    dataset2 = gdal.Open(path2)
+    metaraster = dataset2.GetMetadata()
+    datetime = metaraster['DATETIME']
+    return datetime
+	
+
+7-Se riuscite non salvate il progetto. Se lo salvate, ricordatevi di eliminare o spostare, dopo averlo chiuso, le immagini radar usate in modo tale che alla riapertura successiva QGis non le trovi e vi chieda dove si trovano, così che potete puntare alle nuove immagini senza sballare il progetto. Ho creato per questo motivo la cartella "raster_tmp" dove per l'appunto si possono mettere in via temporanea i raster
+
+8-Lanciare la creazione del pdf. Aprire il gestore di stampe cioè l'unico layout presente nel progetto. Andate su "ATlante-stampa pdf".
+  NOTA con PLUGIN:Operazione non necessaria, passare alla sezione "Esporta l'Atlante come" della maschera del plugin e scegliere il formato di output desiderato.
+
+9-ripulire il pdf. Aprite PdfSam, andate su "Riordino visuale" e voilà.
+  NOTA con PLUGIN:Operazione non necessaria
+
+  
+  
+NOTA:
+Per non chiudere e riaprire ogni volta il progetto QGis per caricare i raster di altri giorni, forse è opportuno installare il plugin "changeDataSource" che permette con un clic destro sul layer di modificarne il riferimento
+
