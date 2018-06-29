@@ -3,6 +3,9 @@
 Plugin e progetto QGis per esportare un raporto di evento in PDF con mappe di grandine e precipitazione cumulata sulle 24h centrato su dei comuni di interesse.
 
 
+NON modificare stili dei layers del progetto!
+
+
 OTTIMIZZAZIONI:
 - la mappa di sfondo raster della regione non si ridisegna nell'export dunque appare sgranata. Pare sia un problema proprio dovuto al WMS. Eventualmente sostituirla con dei raster statici ma ovviamente la mole del progetto, anche in un'ottica di scambio e distribuzione, ne risentirebbe....
 
@@ -14,23 +17,23 @@ OTTIMIZZAZIONI:
 AGGIORNAMENTO se INSTALLATE il PLUGIN "EsportaAtlanteHail":
 A-scompattare il file .zip del plugin nel percorso $HOME/.qgis2/python/plugins
 B-attivare il plugin tramite la "Gestione plugin" di QGis. Se non viene riconosciuto, riavviare QGis e/o controllare di aver copiato la cartella "EsportaAtlanteHail" nel percorso corretto
-B-se avete installato il plugin, i punti 3, 4, 5 e 8 elencati di seguito potete farli direttamente dalla finestra del plugin. Il punto 6 invece dovrete comunque seguirlo (cioË la creazione della funzione).
-Grazie al plugin, il punto 9 si puÚ saltare.
+B-se avete installato il plugin, i punti 3, 4, 5 e 8 elencati di seguito potete farli direttamente dalla finestra del plugin. Il punto 6 invece dovrete comunque seguirlo (cio√® la creazione della funzione).
+Grazie al plugin, il punto 9 si pu√≤ saltare.
 ******************************
 
 1-aprire il progetto QGis "rapporto_evento-vXX.qgs"
 
-2-chieder‡ all'apertura dove si trovano i 2 raster COMP e HAIL: reindirizzateli sui file corretti che nel frattempo avrete copiato nella cartella "raster_tmp".
-NON caricateli dopo poichË la legenda del layout si basa sui raster originali, e se vengono rimossi dal progetto salta tutto. Insomma sostituite i raster all'apertura del progetto e tutto andr‡ bene
+2-chieder√† all'apertura dove si trovano i 2 raster COMP e HAIL: reindirizzateli sui file corretti che nel frattempo avrete copiato nella cartella "raster_tmp".
+NON caricateli dopo poich√® la legenda del layout si basa sui raster originali, e se vengono rimossi dal progetto salta tutto. Insomma sostituite i raster all'apertura del progetto e tutto andr√† bene
 
 3-il layer dei dati sulle stazioni ha un filtro sulla data: modificarlo di conseguenza.
 ATTENZIONE! Nel caso di cumulate di pioggia, inserire la data del "giorno successivo"!
   NOTA con PLUGIN:Dunque scegliere il layer "v_meteo_pioggia_dd", selezionare il campo "data" e come filtro inserire ad esempio "= '2018-04-10'"
 
 4-il layer sui comuni_envelope ha un filtro sui comuni: modificarlo di conseguenza.
-  NOTA con PLUGIN:Dal menu a tendina scegliere il layer "comuni_envelope", poi il campo "NOME", e nel filtro inserire ad esempio " IN ('Bene Vagienna', 'CUNEO', 'Demonte')". Spuntare "usa questo filtro anche per l'atlante". Scrivere il nome del COMUNE cosÏ come compare in tabella!!!
+  NOTA con PLUGIN:Dal menu a tendina scegliere il layer "comuni_envelope", poi il campo "NOME", e nel filtro inserire ad esempio " IN ('Bene Vagienna', 'CUNEO', 'Demonte')". Spuntare "usa questo filtro anche per l'atlante". Scrivere il nome del COMUNE cos√¨ come compare in tabella!!!
 
-5-aprendo il layout di stampa (gestore di stampa), nelle opzioni di generazioni dell'atlante c'Ë un filtro sui comuni: modificarlo di conseguenza. Questo filtro potete anche applicarlo al layer "comuni_envelope". Indicazione utile nel caso di uso del plugin cosÏ dovete scrivere il filtro una volta sola.
+5-aprendo il layout di stampa (gestore di stampa), nelle opzioni di generazioni dell'atlante c'√® un filtro sui comuni: modificarlo di conseguenza. Questo filtro potete anche applicarlo al layer "comuni_envelope". Indicazione utile nel caso di uso del plugin cos√¨ dovete scrivere il filtro una volta sola.
   NOTA con PLUGIN:Operazione non necessaria, passare alla sezione "Esporta l'Atlante come" della maschera del plugin e scegliere il formato di output desiderato.
 
 6-infine dovete immettere una nuova funzione per recuperare in automatico la data dalla mappa di grandine.
@@ -51,16 +54,16 @@ def getMetadata_from_raster(layer_name, feature, parent):
     return datetime
 	
 
-7-Se riuscite non salvate il progetto. Se lo salvate, ricordatevi di eliminare o spostare, dopo averlo chiuso, le immagini radar usate in modo tale che alla riapertura successiva QGis non le trovi e vi chieda dove si trovano, cosÏ che potete puntare alle nuove immagini senza sballare il progetto. Ho creato per questo motivo la cartella "raster_tmp" dove per l'appunto si possono mettere in via temporanea i raster
+7-Se riuscite non salvate il progetto. Se lo salvate, ricordatevi di eliminare o spostare, dopo averlo chiuso, le immagini radar usate in modo tale che alla riapertura successiva QGis non le trovi e vi chieda dove si trovano, cos√¨ che potete puntare alle nuove immagini senza sballare il progetto. Ho creato per questo motivo la cartella "raster_tmp" dove per l'appunto si possono mettere in via temporanea i raster
 
-8-Lanciare la creazione del pdf. Aprire il gestore di stampe cioË l'unico layout presente nel progetto. Andate su "ATlante-stampa pdf".
+8-Lanciare la creazione del pdf. Aprire il gestore di stampe cio√® l'unico layout presente nel progetto. Andate su "ATlante-stampa pdf".
   NOTA con PLUGIN:Operazione non necessaria, passare alla sezione "Esporta l'Atlante come" della maschera del plugin e scegliere il formato di output desiderato.
 
-9-ripulire il pdf. Aprite PdfSam, andate su "Riordino visuale" e voil‡.
+9-ripulire il pdf. Aprite PdfSam, andate su "Riordino visuale" e voil√†.
   NOTA con PLUGIN:Operazione non necessaria
 
   
   
 NOTA:
-Per non chiudere e riaprire ogni volta il progetto QGis per caricare i raster di altri giorni, forse Ë opportuno installare il plugin "changeDataSource" che permette con un clic destro sul layer di modificarne il riferimento
+Per non chiudere e riaprire ogni volta il progetto QGis per caricare i raster di altri giorni, forse √® opportuno installare il plugin "changeDataSource" che permette con un clic destro sul layer di modificarne il riferimento
 
