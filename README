@@ -14,7 +14,7 @@ OTTIMIZZAZIONI:
 
 
 ******************************
-AGGIORNAMENTO se INSTALLATE il PLUGIN "EsportaAtlanteHail":
+INSTALLAZIONE PLUGIN "EsportaAtlanteHail":
 A-scompattare il file .zip del plugin nel percorso $HOME/.qgis2/python/plugins
 B-attivare il plugin tramite la "Gestione plugin" di QGis. Se non viene riconosciuto, riavviare QGis e/o controllare di aver copiato la cartella "EsportaAtlanteHail" nel percorso corretto
 B-se avete installato il plugin, i punti 3, 4, 5 e 8 elencati di seguito potete farli direttamente dalla finestra del plugin. Il punto 6 invece dovrete comunque seguirlo (cioè la creazione della funzione).
