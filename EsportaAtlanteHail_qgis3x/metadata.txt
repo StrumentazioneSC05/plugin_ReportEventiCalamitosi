@@ -1,0 +1,47 @@
+# This file contains metadata for your plugin. Since 
+# version 2.0 of QGIS this is the proper way to supply 
+# information about a plugin. The old method of 
+# embedding metadata in __init__.py will 
+# is no longer supported since version 2.0.
+
+# This file should be included when you package your plugin.# Mandatory items:
+
+[general]
+name=EsportaAtlanteHail
+qgisMinimumVersion=3.8
+qgisMaximumVersion=3.99
+description=EsportaAtlanteHail
+version=0.2
+author=ar_gaeta@yahoo.it
+email=ar_gaeta@yahoo.it
+release_date=2021/07/14
+
+about=A partire dal progetto per esportare i rapporti di evento della grandine, permette all'utente di stampare l'atlante in PDF secondo il filtro sui comuni fornito
+
+tracker=localhost
+repository=localhost
+# End of mandatory metadata
+
+# Recommended items:
+
+# Uncomment the following line and add your changelog:
+changelog=
+    2021/07/14 0.2 riporto la versione per adattarsi a QGis 3.x
+	
+
+# Tags are comma separated with spaces allowed
+tags=print, composer
+
+homepage=yahoo.com
+category=Plugins
+icon=hail.png
+# experimental flag
+experimental=True
+
+# deprecated flag (applies to the whole plugin, not just a single version)
+deprecated=False
+
+#Per rimappare le immagini editare in modo adeguato il file "resources.qrc" e poi lanciare da shell:
+#  pyrcc4 -o resources.py resources.qrc
+# ATTENZIONE!! Per QGis 3.x DEVE ESSERE RICREATO QUESTO FILE:
+#  pyrcc5 -o resources.py resources.qrc
